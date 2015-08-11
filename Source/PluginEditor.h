@@ -18,20 +18,26 @@
 //==============================================================================
 /**
 */
-class JucetoolAudioProcessorEditor  : public AudioProcessorEditor
+class JucetoolAudioProcessorEditor  : public AudioProcessorEditor, private Slider::Listener
 {
 public:
     JucetoolAudioProcessorEditor (JucetoolAudioProcessor&);
     ~JucetoolAudioProcessorEditor();
 
     //==============================================================================
-    void paint (Graphics&) override;
+    void paint (Graphics& g) override;
     void resized() override;
+
+	void sliderValueChanged(Slider* slider) override;
+
+	Slider midiVolume;
 
 private:
     // This reference is provided as a quick way for your editor to
     // access the processor object that created it.
     JucetoolAudioProcessor& processor;
+
+//	Slider midiVolume;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (JucetoolAudioProcessorEditor)
 };

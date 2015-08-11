@@ -17,8 +17,21 @@ JucetoolAudioProcessorEditor::JucetoolAudioProcessorEditor (JucetoolAudioProcess
     : AudioProcessorEditor (&p), processor (p)
 {
     // Make sure that before the constructor has finished, you've set the
-    // editor's size to whatever you need it to be.UNTEST
-    setSize (400, 300);
+    // editor's size to whatever you need it to be.
+    setSize (200, 200);
+
+	// Slider Params
+	midiVolume.setSliderStyle(Slider::LinearBarVertical);
+	midiVolume.setRange(0.0, 127.0, 1.0);
+	midiVolume.setTextBoxStyle(Slider::NoTextBox, false, 90, 0);
+	midiVolume.setPopupDisplayEnabled(true, this);
+	midiVolume.setTextValueSuffix("Volume");
+	midiVolume.setValue(1.0);
+
+	addAndMakeVisible(&midiVolume);
+
+	midiVolume.addListener(this);
+	DBG("Test!");
 }
 
 JucetoolAudioProcessorEditor::~JucetoolAudioProcessorEditor()
@@ -32,11 +45,18 @@ void JucetoolAudioProcessorEditor::paint (Graphics& g)
 
     g.setColour (Colours::black);
     g.setFont (15.0f);
-    g.drawFittedText ("Hello World!", getLocalBounds(), Justification::centred, 1);
+    g.drawFittedText ("Midi Volume Control", 0, 0, getWidth(), 30, Justification::centred, 1);
 }
 
 void JucetoolAudioProcessorEditor::resized()
 {
     // This is generally where you'll want to lay out the positions of any
     // subcomponents in your editor..
+	midiVolume.setBounds(40, 30, 20, getHeight() - 60);
+}
+
+void JucetoolAudioProcessorEditor::sliderValueChanged(Slider* slider)
+{
+	processor.noteOnVel = midiVolume.getValue();
+	DBG("Volume Changing: " + String(midiVolume.getValue()));
 }
